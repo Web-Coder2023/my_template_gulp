@@ -57,9 +57,6 @@ function images() {
 
 function scripts() {
   return src([
-    'node_modules/jquery/dist/jquery.js',
-    'node_modules/bootstrap/dist/js/bootstrap.js',
-    'node_modules/swiper/swiper-bundle.js',
     'app/js/script.js'
   ])
     .pipe(concat('script.min.js'))
