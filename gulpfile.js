@@ -1,73 +1,75 @@
-const { src, dest, watch, parallel, series }  = require('gulp');
+const { src, dest, watch, parallel, series } = require('gulp');
+const scss = require('gulp-sass')(require('sass'));
+const concat = require('gulp-concat');
+const browserSync = require('browser-sync').create();
+const terser = require('gulp-terser');
+const autoprefixer = require('gulp-autoprefixer');
+const imagemin = require('gulp-imagemin');
+const del = require('del');
+const include = require('gulp-include');
+const changed = require('gulp-changed');
+const gulpif = require('gulp-if');
 
-const scss           = require('gulp-sass')(require('sass'));
-const concat         = require('gulp-concat');
-const browserSync    = require('browser-sync').create();
-const uglify         = require('gulp-uglify-es').default;
-const autoprefixer   = require('gulp-autoprefixer');
-const imagemin       = require('gulp-imagemin');
-const del            = require('del');
-const include        = require('gulp-include');
+let isDev = true;
+
+function setProduction(cb) {
+  isDev = false;
+  cb();
+}
 
 function pages() {
   return src('app/pages/*.html')
-  .pipe(include({
-     includePaths: 'app/blocks'
-  }))
-  .pipe(dest('app'))
-  .pipe(browserSync.stream())
+    .pipe(include({
+      includePaths: 'app/blocks'
+    }))
+    .pipe(dest('app'))
+    .pipe(browserSync.stream());
 }
 
 function browsersync() {
   browserSync.init({
-    server : {
+    server: {
       baseDir: 'app/'
     }
   });
 }
 
 function cleanDist() {
-  return del('dist')
+  return del('dist');
 }
 
 function images() {
   return src('app/images/**/*')
-    .pipe(imagemin(
-      [
-        imagemin.gifsicle({ interlaced: true }),
-        imagemin.mozjpeg({ quality: 75, progressive: true }),
-        imagemin.optipng({ optimizationLevel: 5 }),
-        imagemin.svgo({
-          plugins: [
-            { removeViewBox: true },
-            { cleanupIDs: false }
-          ]
-        })
-      ]
-    ))
-    .pipe(dest('dist/images'))
+    .pipe(changed('dist/images')) // Добавили gulp-changed
+    .pipe(imagemin([
+      imagemin.gifsicle({ interlaced: true }),
+      imagemin.mozjpeg({ quality: 75, progressive: true }),
+      imagemin.optipng({ optimizationLevel: 5 }),
+      imagemin.svgo({
+        plugins: [
+          { removeViewBox: true },
+          { cleanupIDs: false }
+        ]
+      })
+    ]))
+    .pipe(dest('dist/images'));
 }
 
 function scripts() {
   return src([
     'node_modules/jquery/dist/jquery.js',
     'node_modules/bootstrap/dist/js/bootstrap.js',
-    'node_modules/swiper/swiper-bundle.js', // Добавьте эту строку
+    'node_modules/swiper/swiper-bundle.js',
     'app/js/script.js'
   ])
     .pipe(concat('script.min.js'))
-    .pipe(uglify())
+    .pipe(gulpif(!isDev, terser())) // Используем gulp-if для минификации в продакшне
     .pipe(dest('app/js'))
-    .pipe(browserSync.stream())
+    .pipe(browserSync.stream());
 }
-
-
-
 
 function styles() {
   return src([
-    'node_modules/bootstrap/scss/bootstrap.scss',
-    'node_modules/swiper/swiper.scss', // Добавьте эту строку
     'app/scss/style.scss'
   ])
     .pipe(scss({ outputStyle: 'compressed' }))
@@ -77,10 +79,8 @@ function styles() {
       grid: true
     }))
     .pipe(dest('app/css'))
-    .pipe(browserSync.stream())
+    .pipe(browserSync.stream());
 }
-
-
 
 function building() {
   return src([
@@ -89,22 +89,16 @@ function building() {
     'app/js/script.min.js',
     'app/*.html',
     '!app/blocks/*.html'
-  ], {base: 'app'})
-    .pipe(dest('dist'))
+  ], { base: 'app' })
+    .pipe(dest('dist'));
 }
 
 function watching() {
-  browserSync.init({
-     server: {
-         baseDir: "app/"
-     }
- });
-  watch(['app/scss/**/*.scss'], styles)
-  watch(['app/img/src'], images)
-  watch(['app/js/script.js'], scripts)
-  watch(['app/blocks/*', 'app/pages/*'], pages)
-  watch(['app/**/*.html']).on('change', browserSync.reload);
-
+  watch('app/scss/**/*.scss', styles);
+  watch('app/img/src', images);
+  watch('app/js/script.js', scripts);
+  watch(['app/blocks/*', 'app/pages/*'], pages);
+  watch('app/**/*.html').on('change', browserSync.reload);
 }
 
 exports.styles = styles;
@@ -115,6 +109,6 @@ exports.pages = pages;
 exports.images = images;
 exports.cleanDist = cleanDist;
 
-const build = series(cleanDist, building)
-exports.default = parallel(styles, images, build, scripts, pages, watching);
-
+const build = series(cleanDist, parallel(styles, images, scripts, pages), building);
+exports.default = series(build, parallel(watching, browsersync));
+exports.build = series(setProduction, build);
