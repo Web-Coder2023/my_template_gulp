@@ -1,0 +1,11 @@
+.header{
+   background-color: black;
+   padding: 20px 0;
+   &__logo{
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      font-weight: 700;
+      font-size: 35px;
+      color: aliceblue;
+      text-decoration: none;
+   }
+}
