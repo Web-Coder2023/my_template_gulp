@@ -30,7 +30,7 @@ function fonts() {
 }
 
 function pages() {
-    return src('app/**/*.dev.html')
+    return src('app/pages/*.dev.html')
         .pipe(include({
             includePaths: 'app/layouts/'
         }))
