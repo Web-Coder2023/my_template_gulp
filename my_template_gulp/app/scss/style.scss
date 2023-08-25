@@ -1,12 +1,10 @@
 @import './fonts/fonts.scss';
-@import './constants/null.scss';
-@import './libs/bootstrap.scss';
+@import './libs/global.scss';
 @import './constants/base.scss';
-@import './libs/swiper.scss';
 
 
 @import './components/general/header.scss';
 @import './components/general/main.scss';
 @import './components/general/footer.scss';
-
+@import './libs/swiper.scss';
 
