@@ -1,1 +1,1 @@
-//= ../components/burger.js
+// = ../components/burger.js

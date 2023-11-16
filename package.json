@@ -28,5 +28,8 @@
     "gulp-webp": "^4.0.1",
     "sass": "^1.59.3",
     "swiper": "^9.1.1"
+  },
+  "dependencies": {
+    "caniuse-lite": "^1.0.30001562"
   }
 }
