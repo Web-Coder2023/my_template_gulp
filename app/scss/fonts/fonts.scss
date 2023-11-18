@@ -1,9 +1,10 @@
-@font-face {
-    font-family: 'Regular';
-    src: url('../../fonts/Roboto-Regular.woff2');
-}
+// Подключение шрифтов
+// Флаг &display=swap необходим для коректного отображения шрифтов
+@import url("https://fonts.googleapis.com/css?family=Roboto:regular&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Lato:700&display=swap");
 
-@font-face {
-    font-family: 'Bold';
-    src: url('../../fonts/Roboto-Bold.woff2');
-}
+// Шрифт по умолчанию
+$defaultFonts: 'Roboto', sans-serif;
+
+// Остальные шрифты
+$lato: 'Lato', sans-serif;

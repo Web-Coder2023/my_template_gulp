@@ -35,6 +35,8 @@ body {
 	font-size: 100%;
 	line-height: 1;
 	font-size: 14px;
+	font-family: $defaultFonts;
+	color: $mainColorFont;
 }
 
 input,
@@ -60,7 +62,6 @@ a,
 a:visited {
 	text-decoration: none;
 }
-
 a:hover {
 	text-decoration: none;
 }
@@ -85,36 +86,7 @@ h6 {
 
 /*--------------------*/
 [class*="__container"] {
-	width: 100%;
+	width: 90%;
+	max-width: $mainContainer;
 	margin: 0 auto;
-}
-
-@media (min-width: 576px) {
-	[class*="__container"] {
-		max-width: 540px;
-	}
-}
-
-@media (min-width: 768px) {
-	[class*="__container"] {
-		max-width: 720px;
-	}
-}
-
-@media (min-width: 992px) {
-	[class*="__container"] {
-		max-width: 960px;
-	}
-}
-
-@media (min-width: 1200px) {
-	[class*="__container"] {
-		max-width: 1140px;
-	}
-}
-
-@media (min-width: 1400px) {
-	[class*="__container"] {
-		max-width: 1320px;
-	}
 }
