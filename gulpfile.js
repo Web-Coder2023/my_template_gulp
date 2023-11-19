@@ -89,6 +89,7 @@ function building() {
         '!app/**/*.dev.html',
         '!app/layouts/**/*.*',
         'app/css/**/*.css',
+        'app/iconfont/**/*.*',
         'app/js/**/*.min.js',
     ], {base : 'app'})
         .pipe(dest('dist'))
