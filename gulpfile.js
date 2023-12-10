@@ -1,5 +1,4 @@
-const {src, dest, watch, parallel, series} = require('gulp');
-
+const { src, dest, watch, parallel, series } = require('gulp');
 const scss = require('gulp-sass')(require('sass'));
 const uglify = require('gulp-uglify-es').default;
 const browserSync = require('browser-sync').create();
@@ -12,20 +11,22 @@ const rigger = require('gulp-rigger');
 const rename = require('gulp-rename');
 const htmlmin = require('gulp-htmlmin');
 const changed = require('gulp-changed');
+const path = require('path');
 
+const currentFolder = path.basename(process.cwd()); // Извлекаем текущую папку
 
 function images() {
     return src('app/images/accomodate/**/*.*')
         .pipe(newer('app/images'))
         .pipe(webp())
-        .pipe(dest('app/images'))
+        .pipe(dest('app/images'));
 }
 
 function fonts() {
     return src('app/fonts/accomodate/**/*.*')
         .pipe(changed('app/fonts', { extension: '.woff2' }))
         .pipe(ttf2woff2())
-        .pipe(dest('app/fonts'))
+        .pipe(dest('app/fonts'));
 }
 
 function pages() {
@@ -34,24 +35,22 @@ function pages() {
             includePaths: 'app/layouts/'
         }))
         .pipe(htmlmin({ collapseWhitespace: true }))
-        .pipe(rename(function (path) {
-            path.basename = path.basename.replace(".dev", "");
-            path.extname = ".html";
+        .pipe(rename(function (file) {
+            file.basename = file.basename.replace(".dev", "");
+            file.extname = ".html";
         }))
-        .pipe(dest('app'))
-        .pipe(browserSync.stream())
+        .pipe(dest('app'));
 }
 
 function styles() {
     return src('app/scss/*.scss')
-        .pipe(autoprefixer({overrideBrowserslist: ['last 10 version']}))
+        .pipe(autoprefixer({ overrideBrowserslist: ['last 10 version'] }))
         .pipe(rename({
             suffix: ".min",
             extname: ".css"
         }))
-        .pipe(scss({outputStyle: 'compressed'}))
-        .pipe(dest('app/css'))
-        .pipe(browserSync.stream())
+        .pipe(scss({ outputStyle: 'compressed' }))
+        .pipe(dest('app/css'));
 }
 
 function scripts() {
@@ -62,8 +61,7 @@ function scripts() {
             suffix: ".min",
             extname: ".js"
         }))
-        .pipe(dest('app/js'))
-        .pipe(browserSync.stream());
+        .pipe(dest('app/js'));
 }
 
 function watching() {
@@ -72,11 +70,11 @@ function watching() {
             baseDir: "app/"
         }
     });
-    watch(['app/images/accomodate/**/*.*'], images)
-    watch(['app/fonts/accomodate/**/*.*'], fonts)
-    watch(['app/layouts/**/*.html', 'app/**/*.dev.html'], pages)
-    watch(['app/scss/**/*.scss'], styles)
-    watch(['app/js/accomodate/**/*.js', 'app/js/components/**/*.js'], scripts).on('change', browserSync.reload)
+    watch(['app/images/accomodate/**/*.*'], images);
+    watch(['app/fonts/accomodate/**/*.*'], fonts);
+    watch(['app/layouts/**/*.html', 'app/**/*.dev.html'], pages);
+    watch(['app/scss/**/*.scss'], styles);
+    watch(['app/js/accomodate/**/*.js', 'app/js/components/**/*.js'], scripts).on('change', browserSync.reload);
 }
 
 function building() {
@@ -91,10 +89,9 @@ function building() {
         'app/css/**/*.css',
         'app/iconfont/**/*.*',
         'app/js/**/*.min.js',
-    ], {base : 'app'})
-        .pipe(dest('dist'))
+    ], { base: 'app' })
+        .pipe(dest(currentFolder)); // Используем текущую папку в качестве целевой директории
 }
-
 
 exports.styles = styles;
 exports.images = images;
