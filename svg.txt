@@ -1,0 +1,3 @@
+<svg>
+    <use xlink:href="svg/svg-sprite.svg#icon"></use>
+</svg>
