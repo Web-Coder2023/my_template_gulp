@@ -1,14 +1,4 @@
-// Ширина ограничивающего контейнера
-$mainContainer: 1200px;
-
-// Планшеты, некоторые телефоны в горизонтальном положении
-$tablet:  991.98px;
-
-// Телефоны L
-$mobile:  767.98px;
-
-// Телефоны S
-$mobileSmall:  479.98px;
+@use 'sass:math';
 
 // Цвет фона по умолчанию
 $mainColorBg: #fff;
@@ -16,5 +6,10 @@ $mainColorBg: #fff;
 // Цвет шрифта по умолчанию
 $mainColorFont: #313131;
 
-// Размер шрифта по умолчанию
-$fontSizeDefault: 14px;
+@function rem($value) {
+    @return to-rem($value);
+}
+
+@function to-rem($value, $fontSizeDefault: 16px) {
+    @return math.div($value, $fontSizeDefault) + 0rem;
+}

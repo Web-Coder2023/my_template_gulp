@@ -12,10 +12,10 @@
     opacity: 1;
     visibility: visible;
     &__elem {
-        width: 100px;
-        height: 100px;
+        width: rem(100px);
+        height: rem(100px);
         border-radius: 100%;
-        border: 10px solid #fff;
+        border: rem(10px) solid #fff;
         border-bottom: 10px solid #000;
         animation:  loader 1s infinite linear;
     }

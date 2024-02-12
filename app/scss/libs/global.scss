@@ -1,63 +1,74 @@
 * {
-	padding: 0px;
-	margin: 0px;
-	border: 0px;
+	padding: 0;
+	margin: 0;
+	border: 0;
 }
+
 *,
 *:before,
 *:after {
 	box-sizing: border-box;
 }
+
 :focus,
 :active {
 	outline: none;
 }
+
 a:focus,
 a:active {
 	outline: none;
 }
+
 html,
 body {
 	height: 100%;
 }
+
 body {
 	color: $mainColorFont;
 	line-height: 1;
 	font-family: $defaultFonts;
-	font-size: $fontSizeDefault;
+	font-size: 1rem;
+	/* Use relative unit */
 	-ms-text-size-adjust: 100%;
 	-moz-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
 input,
 button,
 textarea {
 	font-family: $defaultFonts;
 	font-size: inherit;
 }
+
 button {
 	cursor: pointer;
 	color: inherit;
 	background-color: inherit;
 }
+
 a {
 	color: inherit;
-}
-a:link,
-a:visited {
 	text-decoration: none;
+	/* Combine link styling */
 }
+
 a:hover {
 	text-decoration: none;
 }
+
 ul li {
 	list-style: none;
 }
+
 img {
 	vertical-align: top;
 }
+
 h1,
 h2,
 h3,
@@ -67,10 +78,9 @@ h6 {
 	font-weight: inherit;
 	font-size: inherit;
 }
-
 /*--------------------*/
 [class*="__container"] {
 	width: 90%;
-	max-width: $mainContainer;
+	max-width: rem(1200px);
 	margin: 0 auto;
 }
